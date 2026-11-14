@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;600;700;800&amp;family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>
+html,body{margin:0;background:#0a0f1a;color:#c9ced6;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+a{color:#f2f3f5}a:hover{color:#ffffff}
+::selection{background:#f2f3f5;color:#0a0f1a}
+input::placeholder{color:#7d8696}
+:focus-visible{outline:2px solid #f2f3f5;outline-offset:3px}
+@keyframes opf-sweep{0%{transform:translateX(-100%)}100%{transform:translateX(260%)}}
+</style>
+</helmet>
+
+<div style="position:fixed;top:0;left:0;right:0;z-index:60;pointer-events:none">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;padding:10px clamp(16px,4vw,40px);background:linear-gradient(180deg,rgba(4,6,11,.94) 0%,rgba(4,6,11,.6) 70%,rgba(4,6,11,0) 100%)">
+    <a href="#top" style="pointer-events:auto;display:flex;align-items:baseline;gap:12px;min-height:44px;align-items:center;text-decoration:none">
+      <span style="font:800 22px/1 'Big Shoulders Display',sans-serif;letter-spacing:.04em;color:#f2f3f5">S&amp;A</span>
+      <span style="font:400 12px/1 'IBM Plex Mono',monospace;color:#9aa3b2">June 12, 2027 · Napa</span>
+    </a>
+    <div style="display:flex;align-items:center;gap:clamp(8px,2vw,20px)">
+      <button type="button" role="switch" aria-checked="{{ ariaMotion }}" aria-label="Animations" onClick="{{ toggleMotion }}" style="pointer-events:auto;display:flex;align-items:center;gap:10px;min-height:44px;padding:0 4px;background:transparent;border:0;cursor:pointer;font:400 12px/1 'IBM Plex Mono',monospace;color:#c9ced6">
+        <span>Motion {{ motionLabel }}</span>
+        <span style="position:relative;display:block;width:34px;height:20px;border-radius:20px;border:1px solid rgba(201,206,214,.55);background:{{ trkBg }};transition:background .2s ease">
+          <span style="position:absolute;top:3px;left:3px;width:12px;height:12px;border-radius:50%;background:{{ knobBg }};transform:translateX({{ knobX }});transition:transform .2s ease"></span>
+        </span>
+      </button>
+      <a href="#clearance" onClick="{{ goRSVP }}" tabIndex="{{ barCta.tab }}" aria-hidden="{{ barCta.hidden }}" style="pointer-events:{{ barCta.pe }};display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border-radius:4px;background:{{ acc }};color:{{ accInk }};text-decoration:none;font:700 17px/1 'Big Shoulders Display',sans-serif;letter-spacing:.1em;text-transform:uppercase;opacity:{{ barCta.o }};transform:translateY({{ barCta.y }});transition:opacity .3s ease,transform .3s ease" style-hover="color:{{ accInk }}">RSVP</a>
+    </div>
+  </div>
+  <div ref="{{ progRef }}" aria-hidden="true" style="position:absolute;left:0;right:0;bottom:0;height:2px;background:{{ acc }};transform-origin:left center;transform:scaleX(0)"></div>
+</div>
+
+<header id="top" data-screen-label="01 Hero" style="position:relative;background:#04060b;isolation:isolate">
+  <sc-if value="{{ letterbox }}" hint-placeholder-val="{{ true }}">
+    <div aria-hidden="true" style="height:min(7vh,60px);background:#04060b"></div>
+  </sc-if>
+  <div style="position:relative;width:100%;aspect-ratio:1024/572;max-height:94svh;min-height:220px;overflow:hidden;background:radial-gradient(120% 80% at 70% 20%,#1a2740 0%,#0d1424 45%,#0a0f1a 100%)">
+    <div ref="{{ heroImgRef }}" style="position:absolute;inset:0;color:#8d96a5;will-change:transform">
+      <div ref="{{ kbRef }}" style="position:absolute;inset:0;transform-origin:50% 35%">
+        <image-slot id="hero-plate" shape="rect" src="uploads/pasted-1794241088138-0.png" placeholder="Poster: Sarah &amp; Alex, Operation: Forever"></image-slot>
+      </div>
+    </div>
+    <div aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(255,255,255,.018) 0 1px,transparent 1px 3px)"></div>
+    <div aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(10,15,26,0) 0%,rgba(10,15,26,0) 52%,rgba(10,15,26,.72) 80%,#0a0f1a 97%),linear-gradient(90deg,rgba(10,15,26,.35) 0%,rgba(10,15,26,0) 18%,rgba(10,15,26,0) 82%,rgba(10,15,26,.35) 100%)"></div>
+    <div ref="{{ emberRef }}" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none"></div>
+  </div>
+
+  <div style="position:relative;z-index:2;max-width:1240px;margin:clamp(-230px,-15vw,-30px) auto 0;padding:0 clamp(20px,5vw,56px) clamp(80px,9vw,120px);display:flex;flex-direction:column;gap:clamp(20px,2.6vw,28px)">
+    <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;margin:0">Sarah &amp; Alex: Operation Forever, the wedding mission</h1>
+    <p style="margin:0;font:italic 400 clamp(32px,4.6vw,54px)/1.02 'Cormorant Garamond',serif;color:#f2f3f5;text-wrap:balance;text-shadow:0 2px 24px rgba(4,6,11,.8)">Your presence is required.</p>
+
+    <dl style="margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:18px clamp(16px,3vw,40px);max-width:860px">
+      <div style="border-top:1px solid rgba(201,206,214,.35);padding-top:12px;display:flex;flex-direction:column;gap:6px">
+        <dt style="font:400 12px/1 'IBM Plex Mono',monospace;color:#9aa3b2">Date</dt>
+        <dd style="margin:0;font:700 clamp(26px,3vw,32px)/1 'Big Shoulders Display',sans-serif;letter-spacing:.02em;color:#f2f3f5">06.12.2027</dd>
+        <dd style="margin:0;font:400 13px/1.3 'IBM Plex Mono',monospace;color:#b9c0cb">Saturday, June 12</dd>
+      </div>
+      <div style="border-top:1px solid rgba(201,206,214,.35);padding-top:12px;display:flex;flex-direction:column;gap:6px">
+        <dt style="font:400 12px/1 'IBM Plex Mono',monospace;color:#9aa3b2">Time</dt>
+        <dd style="margin:0;font:700 clamp(26px,3vw,32px)/1 'Big Shoulders Display',sans-serif;letter-spacing:.02em;color:#f2f3f5">16:00 hrs</dd>
+        <dd style="margin:0;font:400 13px/1.3 'IBM Plex Mono',monospace;color:#b9c0cb">4:00 PM · arrive by 3:40</dd>
+      </div>
+      <div style="border-top:1px solid rgba(201,206,214,.35);padding-top:12px;display:flex;flex-direction:column;gap:6px">
+        <dt style="font:400 12px/1 'IBM Plex Mono',monospace;color:#9aa3b2">Location</dt>
+        <dd style="margin:0;font:700 clamp(26px,3vw,32px)/1 'Big Shoulders Display',sans-serif;letter-spacing:.02em;color:#f2f3f5">Hawthorne House</dd>
+        <dd style="margin:0;font:400 13px/1.3 'IBM Plex Mono',monospace;color:#b9c0cb">Napa Valley, California</dd>
+      </div>
+    </dl>
+
+    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:18px 28px;margin-top:6px">
+      <a href="#clearance" onClick="{{ goRSVP }}" style="display:inline-flex;align-items:center;gap:14px;min-height:60px;padding:0 34px;border-radius:4px;background:{{ acc }};color:{{ accInk }};text-decoration:none;font:700 22px/1 'Big Shoulders Display',sans-serif;letter-spacing:.12em;text-transform:uppercase;box-shadow:0 26px 50px -18px {{ accGlow }},0 10px 24px -10px rgba(0,0,0,.8);transition:transform .25s ease,box-shadow .25s ease" style-hover="transform:translateY(-3px);color:{{ accInk }}">Accept mission <span aria-hidden="true" style="font-family:'IBM Plex Mono',monospace;font-size:18px">→</span></a>
+      <div style="display:flex;flex-direction:column;gap:6px;font:400 13px/1.3 'IBM Plex Mono',monospace;color:#9aa3b2">
+        <span>RSVP by April 1, 2027</span>
+        <span style="color:#c9ced6">T-minus <span style="color:#f2f3f5;font-variant-numeric:tabular-nums">{{ cd }}</span></span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section data-screen-label="02 Briefing" style="position:relative;max-width:1240px;margin:0 auto;padding:clamp(40px,5vw,72px) clamp(20px,5vw,56px) clamp(110px,14vw,170px)">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:clamp(56px,7vw,96px);align-items:center">
+    <div ref="{{ figRef }}" data-reveal="figs" style="position:relative;height:clamp(360px,52vw,540px)">
+      <figure style="position:absolute;left:0;top:0;width:58%;height:80%;margin:0;padding:10px 10px 46px;background:#141c2b;border:1px solid rgba(201,206,214,.2);border-radius:4px;opacity:{{ f0.o }};transform:{{ f0.tf }};transition:{{ f0.t }};box-shadow:0 40px 80px -30px rgba(0,0,0,.9)">
+        <div style="position:relative;width:100%;height:100%;overflow:hidden;background:#0b111c">
+          <div role="img" aria-label="Surveillance still of Sarah" style="position:absolute;inset:0;background:url('uploads/pasted-1794241088138-0.png') 41% 44% / 340% auto no-repeat;filter:grayscale(1) contrast(1.12) brightness(.92)"></div>
+          <div aria-hidden="true" style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.035) 0 1px,transparent 1px 3px)"></div>
+          <span aria-hidden="true" style="position:absolute;left:10px;top:10px;font:400 11px/1 'IBM Plex Mono',monospace;color:#e4e7ec;text-shadow:0 1px 3px #000">CAM 04 · 15:58:12</span>
+        </div>
+        <figcaption style="position:absolute;left:12px;right:12px;bottom:14px;display:flex;justify-content:space-between;gap:8px;font:400 12px/1 'IBM Plex Mono',monospace;color:#c9ced6"><span>Exhibit A · Agent S.</span><span style="color:#9aa3b2">The Strategist</span></figcaption>
+      </figure>
+      <figure style="position:absolute;right:0;bottom:0;width:54%;height:72%;margin:0;padding:10px 10px 46px;background:#141c2b;border:1px solid rgba(201,206,214,.2);border-radius:4px;opacity:{{ f1.o }};transform:{{ f1.tf }};transition:{{ f1.t }};box-shadow:0 40px 80px -30px rgba(0,0,0,.9)">
+        <div style="position:relative;width:100%;height:100%;overflow:hidden;background:#0b111c">
+          <div role="img" aria-label="Surveillance still of Alex" style="position:absolute;inset:0;background:url('uploads/pasted-1794241088138-0.png') 64% 40% / 340% auto no-repeat;filter:grayscale(1) contrast(1.12) brightness(.92)"></div>
+          <div aria-hidden="true" style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.035) 0 1px,transparent 1px 3px)"></div>
+          <span aria-hidden="true" style="position:absolute;left:10px;top:10px;font:400 11px/1 'IBM Plex Mono',monospace;color:#e4e7ec;text-shadow:0 1px 3px #000">CAM 07 · 15:58:14</span>
+        </div>
+        <figcaption style="position:absolute;left:12px;right:12px;bottom:14px;display:flex;justify-content:space-between;gap:8px;font:400 12px/1 'IBM Plex Mono',monospace;color:#c9ced6"><span>Exhibit B · Agent A.</span><span style="color:#9aa3b2">The Wildcard</span></figcaption>
+      </figure>
+    </div>
+
+    <div ref="{{ briefRef }}" data-reveal="brief" style="display:flex;flex-direction:column;gap:22px">
+      <h2 style="margin:0;display:flex;flex-direction:column;gap:4px;font:700 clamp(38px,5.4vw,66px)/.95 'Big Shoulders Display',sans-serif;text-transform:uppercase;letter-spacing:.005em">
+        <span style="display:block;color:#f2f3f5;opacity:{{ b0.o }};transform:translateY({{ b0.y }});transition:{{ b0.t }}">She was sent to find him.</span>
+        <span style="display:block;color:#f2f3f5;opacity:{{ b1.o }};transform:translateY({{ b1.y }});transition:{{ b1.t }}">He was sent to stop her.</span>
+        <span style="display:block;color:#a9b1bd;opacity:{{ b2.o }};transform:translateY({{ b2.y }});transition:{{ b2.t }}">Neither completed the assignment.</span>
+      </h2>
+      <p style="margin:6px 0 0;max-width:30em;font:400 clamp(19px,1.8vw,22px)/1.45 'Cormorant Garamond',serif;color:#c9ced6;text-wrap:pretty;opacity:{{ b3.o }};transform:translateY({{ b3.y }});transition:{{ b3.t }}">Six years of deep cover later, Sarah and Alex are going public. One night only. Every agent they trust is being called in, and that includes you.</p>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="03 Itinerary" style="position:relative;max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,56px) clamp(150px,16vw,200px)">
+  <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:16px 40px;margin-bottom:clamp(36px,5vw,56px)">
+    <h2 ref="{{ hItinRef }}" data-reveal="hItin" style="margin:-.1em 0 0;padding-top:.1em;overflow:hidden;font:800 clamp(52px,9vw,112px)/.85 'Big Shoulders Display',sans-serif;text-transform:uppercase;color:#f2f3f5"><span style="display:block;transform:translateY({{ hItin.y }});transition:{{ hItin.t }}">The itinerary</span></h2>
+    <p style="margin:0;max-width:24em;font:400 clamp(18px,1.6vw,20px)/1.4 'Cormorant Garamond',serif;color:#c9ced6">Four operations, one evening. Every location declassifies as you reach it.</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,262px),1fr));gap:24px 20px;align-items:start">
+    <article ref="{{ d0Ref }}" data-reveal="d0" style="position:relative;opacity:{{ d0.o }};transform:translateY({{ d0.y }}) rotate({{ d0.r }});transition:{{ d0.t }}">
+      <div style="display:inline-flex;padding:8px 14px 7px;background:#161f30;border:1px solid rgba(201,206,214,.2);border-bottom:0;border-radius:6px 6px 0 0;font:400 12px/1 'IBM Plex Mono',monospace;color:#b9c0cb">Dossier 01</div>
+      <div style="position:relative;display:flex;flex-direction:column;gap:12px;min-height:300px;padding:24px 22px 26px;background:linear-gradient(180deg,#161f30 0%,#101827 100%);border:1px solid rgba(201,206,214,.2);border-radius:0 8px 8px 8px;box-shadow:0 34px 60px -30px rgba(0,0,0,.85);overflow:hidden;transition:transform .35s cubic-bezier(.16,.84,.24,1),box-shadow .35s ease,border-color .35s ease" style-hover="transform:translateY(-6px);border-color:rgba(242,243,245,.42);box-shadow:0 44px 70px -30px rgba(0,0,0,.95)">
+        <span style="font:400 12px/1 'IBM Plex Mono',monospace;color:#9aa3b2">Ceremony</span>
+        <span style="font:800 64px/.9 'Big Shoulders Display',sans-serif;color:#f2f3f5;font-variant-numeric:tabular-nums">16:00</span>
+        <h3 style="margin:0;font:700 28px/1 'Big Shoulders Display',sans-serif;text-transform:uppercase;letter-spacing:.03em;color:#f2f3f5">The Rendezvous</h3>
+        <p style="margin:0;font:400 19px/1.4 'Cormorant Garamond',serif;color:#c9ced6;text-wrap:pretty">Vows begin on schedule. There are no second takes.</p>
+        <div style="margin-top:auto;padding-top:14px;border-top:1px dashed rgba(201,206,214,.25);display:flex;flex-direction:column;gap:6px">
+          <span style="font:400 12px/1 'IBM Plex Mono',monospace;color:#9aa3b2">Coordinates</span>
+          <span style="position:relative;align-self:flex-start;font:500 14px/1.2 'IBM Plex Mono',monospace;color:#f2f3f5">The Olive Grove<span aria-hidden="true" style="position:absolute;inset:-3px -6px;background:#c9ced6;transform-origin:right center;transform:scaleX({{ d0.bar }});transition:{{ d0.bt }}"></span></span>
+        </div>
+        <span aria-hidden="true" style="position:absolute;top:22px;right:16px;padding:6px 10px;border:2px solid {{ acc }};border-radius:3px;font:500 11px/1 'IBM Plex Mono',monospace;letter-spacing:.2em;text-transform:uppercase;color:{{ accLink }};opacity:{{ d0.so }};transform:rotate(-12deg) scale({{ d0.ss }});transition:{{ d0.st }}">Declassified</span>
+      </div>
+    </article>
+
+    <article ref="{{ d1Ref }}" data-reveal="d1" style="position:relative;margin-top:40px;opacity:{{ d1.o }};transform:translateY({{ d1.y }}) rotate({{ d1.r }});transition:{{ d1.t }}">
+      <div style="display:inline-flex;padding:8px 14px 7px;background:#161f30;border:1px solid rgba(201,206,214,.2);border-bottom:0;border-radius:6px 6px 0 0;font:400 12px/1 'IBM Plex Mono',monospace;color:#b9c0cb">Dossier 02</div>
+      <div style="position:relative;display:flex;flex-direction:column;gap:12px;min-height:300px;padding:24px 22px 26px;background:linear-gradient(180deg,#161f30 0%,#101827 100%);border:1px solid rgba(201,206,214,.2);border-radius:0 8px 8px 8px;box-shadow:0 34px 60px -30px rgba(0,0,0,.85);overflow:hidden;transition:transform .35s cubic-bezier(.16,.84,.24,1),box-shadow .35s ease,border-color .35s ease" style-hover="transform:translateY(-6px);border-color:rgba(242,243,245,.42);box-shadow:0 44px 70px -30px rgba(0,0,0,.95)">
+        <span style="font:400 12px/1 'IBM Plex Mono',monospace;color:#9aa3b2">Cocktails</span>
+        <span style="font:800 64px/.9 'Big Shoulders Display',sans-serif;color:#f2f3f5;font-variant-numeric:tabular-nums">17:00</span>
+        <h3 style="margin:0;font:700 28px/1 'Big Shoulders Display',sans-serif;text-transform:uppercase;letter-spacing:.03em;color:#f2f3f5">The Debrief</h3>
+        <p style="margin:0;font:400 19px/1.4 'Cormorant Garamond',serif;color:#c9ced6;text-wrap:pretty">Signature drinks, shaken and stirred. Lawn games for agents who need to stay sharp.</p>
+        <div style="margin-top:auto;padding-top:14px;border-top:1px dashed rgba(201,206,214,.25);display:flex;flex-direction:column;gap:6px">
+          <span style="font:400 12px/1 'IBM Plex Mono',monospace;color:#9aa3b2">Coordinates</span>
+          <span style="position:relative;align-self:flex-start;font:500 14px/1.2 'IBM Plex Mono',monospace;color:#f2f3f5">The Stone Terrace<span aria-hidden="true" style="position:absolute;inset:-3px -6px;background:#c9ced6;transform-origin:right center;transform:scaleX({{ d1.bar }});transition:{{ d1.bt }}"></span></span>
+        </div>
+        <span aria-hidden="true" style="position:absolute;top:22px;right:16px;padding:6px 10px;border:2px solid {{ acc }};border-radius:3px;font:500 11px/1 'IBM Plex Mono',monospace;letter-spacing:.2em;text-transform:uppercase;color:{{ accLink }};opacity:{{ d1.so }};transform:rotate(-12deg) scale({{ d1.ss }});transition:{{ d1.st }}">Declassified</span>
+      </div>
+    </article>
+
+    <article ref="{{ d2Ref }}" data-reveal="d2" style="position:relative;opacity:{{ d2.o }};transform:translateY({{ d2.y }}) rotate({{ d2.r }});transition:{{ d2.t }}">
+      <div style="display:inline-flex;padding:8px 14px 7px;background:#161f30;border:1px solid rgba(201,206,214,.2);border-bottom:0;border-radius:6px 6px 0 0;font:400 12px/1 'IBM Plex Mono',monospace;color:#b9c0cb">Dossier 03</div>
+      <div style="position:relative;display:flex;flex-direction:column;gap:12px;min-height:300px;padding:24px 22px 26px;background:linear-gradient(180deg,#161f30 0%,#101827 100%);border:1px solid rgba(201,206,214,.2);border-radius:0 8px 8px 8px;box-shadow:0 34px 60px -30px rgba(0,0,0,.85);overflow:hidden;transition:transform .35s cubic-bezier(.16,.84,.24,1),box-shadow .35s ease,border-color .35s ease" style-hover="transform:translateY(-6px);border-color:rgba(242,243,245,.42);box-shadow:0 44px 70px -30px rgba(0,0,0,.95)">
+        <span style="font:400 12px/1 'IBM Plex Mono',monospace;color:#9aa3b2">Dinner</span>
+        <span style="font:800 64px/.9 'Big Shoulders Display',sans-serif;color:#f2f3f5;font-variant-numeric:tabular-nums">18:30</span>
+        <h3 style="margin:0;font:700 28px/1 'Big Shoulders Display',sans-serif;text-transform:uppercase;letter-spacing:.03em;color:#f2f3f5">The Safehouse</h3>
+        <p style="margin:0;font:400 19px/1.4 'Cormorant Garamond',serif;color:#c9ced6;text-wrap:pretty">Dinner and toasts. Assigned seating; your handler will escort you to your table.</p>
+        <div style="margin-top:auto;padding-top:14px;border-top:1px dashed rgba(201,206,214,.25);display:flex;flex-direction:column;gap:6px">
+          <span style="font:400 12px/1 'IBM Plex Mono',monospace;color:#9aa3b2">Coordinates</span>
+          <span style="position:relative;align-self:flex-start;font:500 14px/1.2 'IBM Plex Mono',monospace;color:#f2f3f5">The Barrel Room<span aria-hidden="true" style="position:absolute;inset:-3px -6px;background:#c9ced6;transform-origin:right center;transform:scaleX({{ d2.bar }});transition:{{ d2.bt }}"></span></span>
+        </div>
+        <span aria-hidden="true" style="position:absolute;top:22px;right:16px;padding:6px 10px;border:2px solid {{ acc }};border-radius:3px;font:500 11px/1 'IBM Plex Mono',monospace;letter-spacing:.2em;text-transform:uppercase;color:{{ accLink }};opacity:{{ d2.so }};transform:rotate(-12deg) scale({{ d2.ss }});transition:{{ d2.st }}">Declassified</span>
+      </div>
+    </article>
+
+    <article ref="{{ d3Ref }}" data-reveal="d3" style="position:relative;margin-top:40px;opacity:{{ d3.o }};transform:translateY({{ d3.y }}) rotate({{ d3.r }});transition:{{ d3.t }}">
+      <div style="display:inline-flex;padding:8px 14px 7px;background:#161f30;border:1px solid rgba(201,206,214,.2);border-bottom:0;border-radius:6px 6px 0 0;font:400 12px/1 'IBM Plex Mono',monospace;color:#b9c0cb">Dossier 04</div>
+      <div style="position:relative;display:flex;flex-direction:column;gap:12px;min-height:300px;padding:24px 22px 26px;background:linear-gradient(180deg,#161f30 0%,#101827 100%);border:1px solid rgba(201,206,214,.2);border-radius:0 8px 8px 8px;box-shadow:0 34px 60px -30px rgba(0,0,0,.85);overflow:hidden;transition:transform .35s cubic-bezier(.16,.84,.24,1),box-shadow .35s ease,border-color .35s ease" style-hover="transform:translateY(-6px);border-color:rgba(242,243,245,.42);box-shadow:0 44px 70px -30px rgba(0,0,0,.95)">
+        <span style="font:400 12px/1 'IBM Plex Mono',monospace;color:#9aa3b2">Dancing</span>
+        <span style="font:800 64px/.9 'Big Shoulders Display',sans-serif;color:#f2f3f5;font-variant-numeric:tabular-nums">20:00</span>
+        <h3 style="margin:0;font:700 28px/1 'Big Shoulders Display',sans-serif;text-transform:uppercase;letter-spacing:.03em;color:#f2f3f5">Full Throttle</h3>
+        <p style="margin:0;font:400 19px/1.4 'Cormorant Garamond',serif;color:#c9ced6;text-wrap:pretty">The floor opens at eight. Sparkler exfil at 23:00, shuttles standing by.</p>
+        <div style="margin-top:auto;padding-top:14px;border-top:1px dashed rgba(201,206,214,.25);display:flex;flex-direction:column;gap:6px">
+          <span style="font:400 12px/1 'IBM Plex Mono',monospace;color:#9aa3b2">Coordinates</span>
+          <span style="position:relative;align-self:flex-start;font:500 14px/1.2 'IBM Plex Mono',monospace;color:#f2f3f5">The Glass Hall<span aria-hidden="true" style="position:absolute;inset:-3px -6px;background:#c9ced6;transform-origin:right center;transform:scaleX({{ d3.bar }});transition:{{ d3.bt }}"></span></span>
+        </div>
+        <span aria-hidden="true" style="position:absolute;top:22px;right:16px;padding:6px 10px;border:2px solid {{ acc }};border-radius:3px;font:500 11px/1 'IBM Plex Mono',monospace;letter-spacing:.2em;text-transform:uppercase;color:{{ accLink }};opacity:{{ d3.so }};transform:rotate(-12deg) scale({{ d3.ss }});transition:{{ d3.st }}">Declassified</span>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section data-screen-label="04 Field Intel" style="position:relative;background:linear-gradient(180deg,rgba(14,21,34,0) 0,rgba(14,21,34,0) 90px,#0e1522 90px,#0e1522 100%);border-bottom:1px solid rgba(201,206,214,.1)">
+  <div style="max-width:1240px;margin:-60px auto 0;padding:0 clamp(20px,5vw,56px) clamp(110px,13vw,160px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:clamp(44px,6vw,80px);align-items:start">
+    <div ref="{{ mapRef }}" data-reveal="map" style="position:relative;height:clamp(300px,40vw,480px);border:1px solid rgba(201,206,214,.22);border-radius:6px;overflow:hidden;background:#121a29;box-shadow:0 50px 90px -40px rgba(0,0,0,.95)">
+      <iframe title="Map of Hawthorne House, Napa" loading="lazy" src="https://www.openstreetmap.org/export/embed.html?bbox=-122.3790%2C38.3820%2C-122.3350%2C38.4000&amp;layer=mapnik&amp;marker=38.3910%2C-122.3570" style="position:absolute;inset:0;width:100%;height:100%;border:0;filter:grayscale(1) invert(.92) contrast(1.05) brightness(.95)"></iframe>
+      <div aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 80px rgba(4,6,11,.75)"></div>
+      <div ref="{{ pulseRef }}" aria-hidden="true" style="position:absolute;left:50%;top:50%;width:56px;height:56px;margin:-28px 0 0 -28px;border:2px solid {{ accLink }};border-radius:50%;pointer-events:none;opacity:0"></div>
+      <div ref="{{ scanRef }}" aria-hidden="true" style="position:absolute;left:0;right:0;top:0;height:2px;background:{{ accLink }};box-shadow:0 0 18px 2px {{ accGlow }};pointer-events:none;opacity:0"></div>
+      <div style="position:absolute;left:14px;top:14px;display:flex;flex-direction:column;gap:6px;padding:10px 12px;background:rgba(4,6,11,.85);border-radius:3px;pointer-events:none;font:400 12px/1.2 'IBM Plex Mono',monospace;color:#c9ced6;opacity:{{ chip.o }};transform:translateY({{ chip.y }});transition:{{ chip.t }}">
+        <span>Target acquired</span><span style="color:#f2f3f5">38.3910° N · 122.3570° W</span>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:30px;padding-top:clamp(0px,6vw,96px)">
+      <h2 ref="{{ hIntelRef }}" data-reveal="hIntel" style="margin:-.1em 0 0;padding-top:.1em;overflow:hidden;font:800 clamp(48px,7vw,88px)/.85 'Big Shoulders Display',sans-serif;text-transform:uppercase;color:#f2f3f5"><span style="display:block;transform:translateY({{ hIntel.y }});transition:{{ hIntel.t }}">Know the terrain</span></h2>
+      <dl style="margin:0;display:grid;gap:26px">
+        <div style="display:grid;gap:6px;padding-top:16px;border-top:1px solid rgba(201,206,214,.18)">
+          <dt style="font:400 12px/1 'IBM Plex Mono',monospace;color:#9aa3b2">Location</dt>
+          <dd style="margin:0;font:400 20px/1.4 'Cormorant Garamond',serif;color:#e4e7ec">Hawthorne House, 1200 Silverado Trail, Napa, CA 94558</dd>
+          <dd style="margin:0"><a href="https://www.google.com/maps/dir/?api=1&amp;destination=1200+Silverado+Trail+Napa+CA+94558" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;min-height:44px;font:500 13px/1 'IBM Plex Mono',monospace;color:{{ accLink }};text-underline-offset:5px" style-hover="color:{{ accLink }}">Get directions →</a></dd>
+        </div>
+        <div style="display:grid;gap:6px;padding-top:16px;border-top:1px solid rgba(201,206,214,.18)">
+          <dt style="font:400 12px/1 'IBM Plex Mono',monospace;color:#9aa3b2">Dress code</dt>
+          <dd style="margin:0;font:400 20px/1.4 'Cormorant Garamond',serif;color:#e4e7ec">Black tie optional. Tuxedos, gowns, sharp suits. Wear shoes you can run in.</dd>
+        </div>
+        <div style="display:grid;gap:6px;padding-top:16px;border-top:1px solid rgba(201,206,214,.18)">
+          <dt style="font:400 12px/1 'IBM Plex Mono',monospace;color:#9aa3b2">Safehouse</dt>
+          <dd style="margin:0;font:400 20px/1.4 'Cormorant Garamond',serif;color:#e4e7ec">A room block is held at The Vintner's Rest under "Operation Forever" until May 1. Shuttles leave the hotel at 15:00 and return from 23:00.</dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section id="clearance" data-screen-label="05 Clearance Check" style="position:relative;max-width:1240px;margin:0 auto;padding:clamp(100px,12vw,150px) clamp(20px,5vw,56px) clamp(110px,13vw,160px);scroll-margin-top:60px">
+  <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:clamp(36px,5vw,60px);max-width:720px">
+    <h2 ref="{{ hRsvpRef }}" data-reveal="hRsvp" style="margin:-.1em 0 0;padding-top:.1em;overflow:hidden;font:800 clamp(52px,9vw,112px)/.85 'Big Shoulders Display',sans-serif;text-transform:uppercase;color:#f2f3f5"><span style="display:block;transform:translateY({{ hRsvp.y }});transition:{{ hRsvp.t }}">Accept your mission</span></h2>
+    <p style="margin:6px 0 0;font:400 clamp(19px,1.8vw,22px)/1.45 'Cormorant Garamond',serif;color:#c9ced6;text-wrap:pretty">Complete your file to reach full clearance. Mission control needs your reply by April 1, 2027.</p>
+  </div>
+
+  <form onSubmit="{{ submit }}" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:clamp(40px,5vw,72px);align-items:start">
+    <div style="display:flex;flex-direction:column;gap:40px">
+      <sc-if value="{{ editing }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="display:flex;align-items:baseline;gap:12px"><span style="font:400 12px/1 'IBM Plex Mono',monospace;color:#9aa3b2">01</span><h3 style="margin:0;font:700 26px/1 'Big Shoulders Display',sans-serif;text-transform:uppercase;letter-spacing:.04em;color:#f2f3f5">Identify yourself</h3></div>
+          <input type="text" value="{{ name }}" onChange="{{ setName }}" placeholder="Full name" aria-label="Full name" autocomplete="name" required="" style="width:100%;min-height:56px;padding:8px 0;background:transparent;border:0;border-bottom:1px solid rgba(201,206,214,.35);border-radius:0;outline:none;color:#f2f3f5;font:600 30px/1.1 'Big Shoulders Display',sans-serif;letter-spacing:.02em" style-focus="border-bottom-color:#f2f3f5">
+          <input type="email" value="{{ email }}" onChange="{{ setEmail }}" placeholder="Secure channel (email)" aria-label="Email" autocomplete="email" required="" style="width:100%;min-height:48px;padding:8px 0;background:transparent;border:0;border-bottom:1px solid rgba(201,206,214,.35);border-radius:0;outline:none;color:#f2f3f5;font:400 16px/1.2 'IBM Plex Mono',monospace" style-focus="border-bottom-color:#f2f3f5">
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="display:flex;align-items:baseline;gap:12px"><span style="font:400 12px/1 'IBM Plex Mono',monospace;color:#9aa3b2">02</span><h3 style="margin:0;font:700 26px/1 'Big Shoulders Display',sans-serif;text-transform:uppercase;letter-spacing:.04em;color:#f2f3f5">Your answer</h3></div>
+          <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px">
+            <button type="button" aria-pressed="{{ st.accept.p }}" onClick="{{ pickAccept }}" style="display:flex;flex-direction:column;align-items:flex-start;gap:8px;min-height:88px;padding:16px;text-align:left;cursor:pointer;border-radius:6px;border:1px solid {{ st.accept.bd }};background:{{ st.accept.bg }};transition:border-color .2s,background .2s,transform .15s cubic-bezier(.16,.84,.24,1)" style-active="transform:scale(.97)">
+              <span style="display:flex;align-items:center;gap:10px;font:700 22px/1 'Big Shoulders Display',sans-serif;text-transform:uppercase;letter-spacing:.04em;color:#f2f3f5"><span style="width:10px;height:10px;border-radius:50%;border:1px solid #f2f3f5;background:{{ st.accept.dot }}"></span>Accept</span>
+              <span style="font:400 17px/1.2 'Cormorant Garamond',serif;color:#c9ced6">Count me in</span>
+            </button>
+            <button type="button" aria-pressed="{{ st.decline.p }}" onClick="{{ pickDecline }}" style="display:flex;flex-direction:column;align-items:flex-start;gap:8px;min-height:88px;padding:16px;text-align:left;cursor:pointer;border-radius:6px;border:1px solid {{ st.decline.bd }};background:{{ st.decline.bg }};transition:border-color .2s,background .2s,transform .15s cubic-bezier(.16,.84,.24,1)" style-active="transform:scale(.97)">
+              <span style="display:flex;align-items:center;gap:10px;font:700 22px/1 'Big Shoulders Display',sans-serif;text-transform:uppercase;letter-spacing:.04em;color:#f2f3f5"><span style="width:10px;height:10px;border-radius:50%;border:1px solid #f2f3f5;background:{{ st.decline.dot }}"></span>Stand down</span>
+              <span style="font:400 17px/1.2 'Cormorant Garamond',serif;color:#c9ced6">Regretfully decline</span>
+            </button>
+          </div>
+        </div>
+
+        <sc-if value="{{ attending }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <div style="display:flex;align-items:baseline;gap:12px"><span style="font:400 12px/1 'IBM Plex Mono',monospace;color:#9aa3b2">03</span><h3 style="margin:0;font:700 26px/1 'Big Shoulders Display',sans-serif;text-transform:uppercase;letter-spacing:.04em;color:#f2f3f5">Bringing backup?</h3></div>
+            <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px">
+              <button type="button" aria-pressed="{{ bk.solo.p }}" onClick="{{ pickSolo }}" style="display:flex;align-items:center;gap:10px;min-height:56px;padding:0 16px;cursor:pointer;border-radius:6px;border:1px solid {{ bk.solo.bd }};background:{{ bk.solo.bg }};font:700 20px/1 'Big Shoulders Display',sans-serif;text-transform:uppercase;letter-spacing:.04em;color:#f2f3f5;transition:border-color .2s,background .2s,transform .15s cubic-bezier(.16,.84,.24,1)" style-active="transform:scale(.97)"><span style="width:10px;height:10px;border-radius:50%;border:1px solid #f2f3f5;background:{{ bk.solo.dot }}"></span>Flying solo</button>
+              <button type="button" aria-pressed="{{ bk.plus.p }}" onClick="{{ pickPlus }}" style="display:flex;align-items:center;gap:10px;min-height:56px;padding:0 16px;cursor:pointer;border-radius:6px;border:1px solid {{ bk.plus.bd }};background:{{ bk.plus.bg }};font:700 20px/1 'Big Shoulders Display',sans-serif;text-transform:uppercase;letter-spacing:.04em;color:#f2f3f5;transition:border-color .2s,background .2s,transform .15s cubic-bezier(.16,.84,.24,1)" style-active="transform:scale(.97)"><span style="width:10px;height:10px;border-radius:50%;border:1px solid #f2f3f5;background:{{ bk.plus.dot }}"></span>Plus one</button>
+            </div>
+            <sc-if value="{{ hasPlus }}" hint-placeholder-val="{{ false }}">
+              <input type="text" value="{{ backupName }}" onChange="{{ setBackupName }}" placeholder="Your backup's name" aria-label="Plus one name" style="width:100%;min-height:48px;padding:8px 0;background:transparent;border:0;border-bottom:1px solid rgba(201,206,214,.35);border-radius:0;outline:none;color:#f2f3f5;font:400 16px/1.2 'IBM Plex Mono',monospace" style-focus="border-bottom-color:#f2f3f5">
+            </sc-if>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <div style="display:flex;align-items:baseline;gap:12px"><span style="font:400 12px/1 'IBM Plex Mono',monospace;color:#9aa3b2">04</span><h3 style="margin:0;font:700 26px/1 'Big Shoulders Display',sans-serif;text-transform:uppercase;letter-spacing:.04em;color:#f2f3f5">Select your mission fuel</h3></div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px">
+              <button type="button" aria-pressed="{{ fu.steak.p }}" onClick="{{ pickSteak }}" style="display:flex;flex-direction:column;align-items:flex-start;gap:8px;min-height:132px;padding:16px;text-align:left;cursor:pointer;border-radius:6px;border:1px solid {{ fu.steak.bd }};background:{{ fu.steak.bg }};transition:border-color .2s,background .2s,transform .15s cubic-bezier(.16,.84,.24,1)" style-active="transform:scale(.97)">
+                <span style="display:flex;justify-content:space-between;width:100%;font:400 12px/1 'IBM Plex Mono',monospace;color:#9aa3b2"><span>Ration A</span><span style="width:10px;height:10px;border-radius:50%;border:1px solid #f2f3f5;background:{{ fu.steak.dot }}"></span></span>
+                <span style="font:700 22px/1 'Big Shoulders Display',sans-serif;text-transform:uppercase;letter-spacing:.03em;color:#f2f3f5">Heavy Artillery</span>
+                <span style="font:400 17px/1.25 'Cormorant Garamond',serif;color:#c9ced6">Filet mignon, peppercorn jus, crushed potatoes</span>
+              </button>
+              <button type="button" aria-pressed="{{ fu.chicken.p }}" onClick="{{ pickChicken }}" style="display:flex;flex-direction:column;align-items:flex-start;gap:8px;min-height:132px;padding:16px;text-align:left;cursor:pointer;border-radius:6px;border:1px solid {{ fu.chicken.bd }};background:{{ fu.chicken.bg }};transition:border-color .2s,background .2s,transform .15s cubic-bezier(.16,.84,.24,1)" style-active="transform:scale(.97)">
+                <span style="display:flex;justify-content:space-between;width:100%;font:400 12px/1 'IBM Plex Mono',monospace;color:#9aa3b2"><span>Ration B</span><span style="width:10px;height:10px;border-radius:50%;border:1px solid #f2f3f5;background:{{ fu.chicken.dot }}"></span></span>
+                <span style="font:700 22px/1 'Big Shoulders Display',sans-serif;text-transform:uppercase;letter-spacing:.03em;color:#f2f3f5">Classic Cover</span>
+                <span style="font:400 17px/1.25 'Cormorant Garamond',serif;color:#c9ced6">Herb-roasted chicken, charred lemon, gratin</span>
+              </button>
+              <button type="button" aria-pressed="{{ fu.vegan.p }}" onClick="{{ pickVegan }}" style="display:flex;flex-direction:column;align-items:flex-start;gap:8px;min-height:132px;padding:16px;text-align:left;cursor:pointer;border-radius:6px;border:1px solid {{ fu.vegan.bd }};background:{{ fu.vegan.bg }};transition:border-color .2s,background .2s,transform .15s cubic-bezier(.16,.84,.24,1)" style-active="transform:scale(.97)">
+                <span style="display:flex;justify-content:space-between;width:100%;font:400 12px/1 'IBM Plex Mono',monospace;color:#9aa3b2"><span>Ration C</span><span style="width:10px;height:10px;border-radius:50%;border:1px solid #f2f3f5;background:{{ fu.vegan.dot }}"></span></span>
+                <span style="font:700 22px/1 'Big Shoulders Display',sans-serif;text-transform:uppercase;letter-spacing:.03em;color:#f2f3f5">Ghost Protocol</span>
+                <span style="font:400 17px/1.25 'Cormorant Garamond',serif;color:#c9ced6">Wild mushroom Wellington, salsa verde (vegan)</span>
+              </button>
+            </div>
+
+            <div aria-live="polite" style="display:flex;flex-direction:column;gap:14px;padding:18px;border:1px solid rgba(201,206,214,.18);border-radius:6px;background:repeating-linear-gradient(135deg,rgba(255,255,255,.018) 0 2px,transparent 2px 10px)">
+              <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap">
+                <span style="font:400 12px/1 'IBM Plex Mono',monospace;color:#9aa3b2">Agent loadout</span>
+                <span style="font:italic 400 18px/1.2 'Cormorant Garamond',serif;color:#f2f3f5">{{ loadoutLine }}</span>
+              </div>
+              <div style="display:grid;grid-template-columns:auto minmax(0,1fr) 32px;gap:10px 14px;align-items:center;font:400 12px/1 'IBM Plex Mono',monospace;color:#c9ced6">
+                <span>Firepower</span>
+                <span style="height:6px;background:rgba(201,206,214,.14);border-radius:6px;overflow:hidden"><span style="display:block;height:100%;width:{{ bar0 }};background:linear-gradient(90deg,#8e97a5,#f2f3f5);border-radius:6px;transition:{{ barT }}"></span></span>
+                <span style="text-align:right;color:#f2f3f5;font-variant-numeric:tabular-nums">{{ val0 }}</span>
+                <span>Dance stamina</span>
+                <span style="height:6px;background:rgba(201,206,214,.14);border-radius:6px;overflow:hidden"><span style="display:block;height:100%;width:{{ bar1 }};background:linear-gradient(90deg,#8e97a5,#f2f3f5);border-radius:6px;transition:{{ barT }}"></span></span>
+                <span style="text-align:right;color:#f2f3f5;font-variant-numeric:tabular-nums">{{ val1 }}</span>
+                <span>Dessert stealth</span>
+                <span style="height:6px;background:rgba(201,206,214,.14);border-radius:6px;overflow:hidden"><span style="display:block;height:100%;width:{{ bar2 }};background:linear-gradient(90deg,#8e97a5,#f2f3f5);border-radius:6px;transition:{{ barT }}"></span></span>
+                <span style="text-align:right;color:#f2f3f5;font-variant-numeric:tabular-nums">{{ val2 }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <div style="display:flex;align-items:baseline;gap:12px"><span style="font:400 12px/1 'IBM Plex Mono',monospace;color:#9aa3b2">05</span><h3 style="margin:0;font:700 26px/1 'Big Shoulders Display',sans-serif;text-transform:uppercase;letter-spacing:.04em;color:#f2f3f5">Request the soundtrack</h3><span style="font:400 12px/1 'IBM Plex Mono',monospace;color:#9aa3b2">optional</span></div>
+            <input type="text" value="{{ song }}" onChange="{{ setSong }}" placeholder="One song that gets you on the floor" aria-label="Song request" style="width:100%;min-height:48px;padding:8px 0;background:transparent;border:0;border-bottom:1px solid rgba(201,206,214,.35);border-radius:0;outline:none;color:#f2f3f5;font:400 16px/1.2 'IBM Plex Mono',monospace" style-focus="border-bottom-color:#f2f3f5">
+          </div>
+        </sc-if>
+      </sc-if>
+
+      <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+        <div ref="{{ confRef }}" aria-live="polite" style="display:flex;flex-direction:column;gap:18px;padding-top:8px">
+          <span style="font:400 13px/1 'IBM Plex Mono',monospace;color:#9aa3b2">{{ confKicker }}</span>
+          <h3 style="margin:0;font:800 clamp(48px,7vw,80px)/.88 'Big Shoulders Display',sans-serif;text-transform:uppercase;color:#f2f3f5">{{ confTitle }}</h3>
+          <p style="margin:0;max-width:30em;font:400 21px/1.45 'Cormorant Garamond',serif;color:#c9ced6;text-wrap:pretty">{{ confBody }}</p>
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px 24px">
+            <sc-if value="{{ viaMail }}" hint-placeholder-val="{{ false }}">
+              <a href="{{ mailHref }}" style="display:inline-flex;align-items:center;min-height:52px;padding:0 24px;border-radius:4px;background:{{ acc }};color:{{ accInk }};text-decoration:none;font:700 19px/1 'Big Shoulders Display',sans-serif;letter-spacing:.1em;text-transform:uppercase" style-hover="color:{{ accInk }}">Open email again</a>
+            </sc-if>
+            <sc-if value="{{ showCal }}" hint-placeholder-val="{{ false }}">
+              <a href="{{ icsHref }}" download="operation-forever.ics" style="display:inline-flex;align-items:center;min-height:52px;padding:0 24px;border-radius:4px;border:1px solid rgba(242,243,245,.6);color:#f2f3f5;text-decoration:none;font:700 19px/1 'Big Shoulders Display',sans-serif;letter-spacing:.1em;text-transform:uppercase" style-hover="background:rgba(242,243,245,.08)">Add to calendar</a>
+            </sc-if>
+            <button type="button" onClick="{{ edit }}" style="min-height:44px;padding:0;background:transparent;border:0;cursor:pointer;font:400 13px/1 'IBM Plex Mono',monospace;color:#f2f3f5;text-decoration:underline;text-underline-offset:5px">Edit my file</button>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+
+    <div style="position:sticky;top:84px;display:flex;flex-direction:column;gap:22px">
+      <div ref="{{ cardRef }}" onPointerMove="{{ tilt }}" onPointerLeave="{{ untilt }}" style="position:relative;overflow:hidden;display:flex;flex-direction:column;gap:20px;padding:22px;border-radius:14px;border:1px solid rgba(201,206,214,.26);background:linear-gradient(160deg,#1a2335 0%,#111827 60%,#0d1320 100%);box-shadow:0 50px 90px -40px rgba(0,0,0,.95),inset 0 1px 0 rgba(255,255,255,.06);transition:transform .4s cubic-bezier(.16,.84,.24,1)">
+        <div aria-hidden="true" ref="{{ glareRef }}" style="position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s ease;background:radial-gradient(420px circle at 50% 0%,rgba(255,255,255,.09),transparent 60%)"></div>
+        <div style="display:flex;justify-content:space-between;gap:12px;font:400 12px/1.35 'IBM Plex Mono',monospace;color:#9aa3b2"><span>Agency of Forever<br>Field credential</span><span style="text-align:right">Clearance<br><span ref="{{ levelRef }}" style="display:inline-block;color:#f2f3f5">{{ level }}</span></span></div>
+        <div style="display:flex;gap:18px;align-items:center">
+          <div style="flex:none;display:grid;place-items:center;width:92px;height:112px;border-radius:6px;border:1px solid rgba(201,206,214,.3);background:repeating-linear-gradient(135deg,rgba(255,255,255,.035) 0 2px,transparent 2px 9px),#0b111c;font:800 44px/1 'Big Shoulders Display',sans-serif;color:#e4e7ec">{{ initials }}</div>
+          <div style="min-width:0;display:flex;flex-direction:column;gap:8px">
+            <span style="font:800 clamp(28px,3.4vw,36px)/.95 'Big Shoulders Display',sans-serif;text-transform:uppercase;color:#f2f3f5;overflow-wrap:anywhere">{{ bName }}</span>
+            <span style="font:italic 400 21px/1.1 'Cormorant Garamond',serif;color:#c9ced6">{{ bCode }}</span>
+          </div>
+        </div>
+        <dl style="margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px 18px;padding-top:16px;border-top:1px dashed rgba(201,206,214,.25);font:400 13px/1.35 'IBM Plex Mono',monospace">
+          <dt style="color:#9aa3b2">Status</dt><dd style="margin:0;color:#f2f3f5">{{ bStatus }}</dd>
+          <dt style="color:#9aa3b2">Party</dt><dd style="margin:0;color:#f2f3f5">{{ bParty }}</dd>
+          <dt style="color:#9aa3b2">Fuel</dt><dd style="margin:0;color:#f2f3f5">{{ bFuel }}</dd>
+          <dt style="color:#9aa3b2">Track</dt><dd style="margin:0;color:#f2f3f5;overflow-wrap:anywhere">{{ bSong }}</dd>
+        </dl>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;justify-content:space-between;font:400 12px/1 'IBM Plex Mono',monospace;color:#9aa3b2"><span>Clearance level</span><span style="color:#f2f3f5;font-variant-numeric:tabular-nums">{{ pctLabel }}</span></div>
+          <div style="height:4px;background:rgba(201,206,214,.14);border-radius:4px;overflow:hidden"><div style="height:100%;width:{{ pctW }};background:{{ pctBg }};transition:{{ barT }}"></div></div>
+        </div>
+        <div aria-hidden="true" style="font:400 12px/1 'IBM Plex Mono',monospace;letter-spacing:.12em;color:#6f7888;white-space:nowrap;overflow:hidden">{{ mrz }}</div>
+        <span aria-hidden="true" style="position:absolute;right:18px;top:96px;padding:8px 14px;border:3px solid {{ acc }};border-radius:4px;font:800 30px/1 'Big Shoulders Display',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:{{ accLink }};background:rgba(10,15,26,.6);opacity:{{ stampO }};transform:rotate(-10deg) scale({{ stampS }});transition:{{ stampT }}">{{ stampText }}</span>
+      </div>
+
+      <sc-if value="{{ editing }}" hint-placeholder-val="{{ true }}">
+        <button ref="{{ subRef }}" type="submit" disabled="{{ notReady }}" style="position:relative;overflow:hidden;display:flex;justify-content:center;align-items:center;gap:14px;width:100%;min-height:64px;padding:0 24px;border-radius:4px;border:1px solid {{ sub.bd }};background:{{ sub.bg }};color:{{ sub.ink }};cursor:{{ sub.cur }};font:700 22px/1 'Big Shoulders Display',sans-serif;letter-spacing:.12em;text-transform:uppercase;box-shadow:{{ sub.sh }};transition:background .25s,color .25s,box-shadow .25s,transform .25s" style-hover="transform:{{ sub.hov }}">{{ sub.label }}{{ sweep }}</button>
+        <sc-if value="{{ hasErr }}" hint-placeholder-val="{{ false }}">
+          <p role="alert" style="margin:0;font:400 13px/1.5 'IBM Plex Mono',monospace;color:{{ accLink }}">{{ err }}</p>
+        </sc-if>
+        <p style="margin:0;font:400 12px/1.5 'IBM Plex Mono',monospace;color:#9aa3b2">{{ privacyLine }}</p>
+      </sc-if>
+    </div>
+  </form>
+</section>
+
+<footer ref="{{ rollRef }}" data-reveal="roll" data-screen-label="06 Credits" style="position:relative;padding:clamp(110px,14vw,170px) clamp(20px,5vw,56px) 64px;background:linear-gradient(180deg,#0a0f1a 0%,#05080e 100%);text-align:center;overflow:hidden">
+  <div style="max-width:720px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:26px">
+    <p style="margin:0;font:400 13px/1 'IBM Plex Mono',monospace;color:#9aa3b2;opacity:{{ r0.o }};transform:translateY({{ r0.y }});transition:{{ r0.t }}">Sarah &amp; Alex in</p>
+    <p style="margin:0;font:800 clamp(48px,9vw,104px)/.85 'Big Shoulders Display',sans-serif;text-transform:uppercase;color:#f2f3f5;opacity:{{ r1.o }};transform:translateY({{ r1.y }});transition:{{ r1.t }}">Operation: Forever</p>
+    <dl style="margin:24px 0 0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px 28px;width:100%;opacity:{{ r2.o }};transform:translateY({{ r2.y }});transition:{{ r2.t }}">
+      <dt style="text-align:right;font:400 13px/1.6 'IBM Plex Mono',monospace;color:#9aa3b2">Directed by</dt><dd style="margin:0;text-align:left;font:400 20px/1.2 'Cormorant Garamond',serif;color:#f2f3f5">Sarah &amp; Alex</dd>
+      <dt style="text-align:right;font:400 13px/1.6 'IBM Plex Mono',monospace;color:#9aa3b2">Executive producers</dt><dd style="margin:0;text-align:left;font:400 20px/1.2 'Cormorant Garamond',serif;color:#f2f3f5">Our parents</dd>
+      <dt style="text-align:right;font:400 13px/1.6 'IBM Plex Mono',monospace;color:#9aa3b2">Stunt coordinator</dt><dd style="margin:0;text-align:left;font:400 20px/1.2 'Cormorant Garamond',serif;color:#f2f3f5">The best man</dd>
+      <dt style="text-align:right;font:400 13px/1.6 'IBM Plex Mono',monospace;color:#9aa3b2">Wardrobe</dt><dd style="margin:0;text-align:left;font:400 20px/1.2 'Cormorant Garamond',serif;color:#f2f3f5">The maid of honor</dd>
+      <dt style="text-align:right;font:400 13px/1.6 'IBM Plex Mono',monospace;color:#9aa3b2">Original score</dt><dd style="margin:0;text-align:left;font:400 20px/1.2 'Cormorant Garamond',serif;color:#f2f3f5">You, on the dance floor</dd>
+    </dl>
+    <p style="margin:28px 0 0;font:italic 400 clamp(24px,3vw,32px)/1.2 'Cormorant Garamond',serif;color:#e4e7ec;opacity:{{ r3.o }};transform:translateY({{ r3.y }});transition:{{ r3.t }}">In theatres June 12, 2027.</p>
+    <sc-if value="{{ editing }}" hint-placeholder-val="{{ true }}">
+      <a href="#clearance" onClick="{{ goRSVP }}" style="display:inline-flex;align-items:center;gap:14px;min-height:56px;padding:0 30px;border-radius:4px;background:{{ acc }};color:{{ accInk }};text-decoration:none;font:700 20px/1 'Big Shoulders Display',sans-serif;letter-spacing:.12em;text-transform:uppercase" style-hover="color:{{ accInk }}">Accept mission <span aria-hidden="true" style="font-family:'IBM Plex Mono',monospace;font-size:16px">→</span></a>
+    </sc-if>
+    <p style="margin:0;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:4px 12px;font:400 13px/1 'IBM Plex Mono',monospace;color:#9aa3b2">Questions for HQ <a href="mailto:hq@sarahandalex.com" style="display:inline-flex;align-items:center;min-height:44px;color:{{ accLink }};text-underline-offset:5px;font-size:14px" style-hover="color:{{ accLink }}">hq@sarahandalex.com</a></p>
+    <p style="margin:48px 0 0;font:400 12px/1.6 'IBM Plex Mono',monospace;color:#7d8696">No vows were stunt-doubled in the making of this wedding.</p>
+  </div>
+</footer>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;accent&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Action Red&quot;,&quot;Neon Cyan&quot;],&quot;default&quot;:&quot;Action Red&quot;,&quot;tsType&quot;:&quot;'Action Red' | 'Neon Cyan'&quot;},&quot;letterbox&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;rsvpEndpoint&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;RSVP delivery&quot;},&quot;hqEmail&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;hq@sarahandalex.com&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;RSVP delivery&quot;}}">
+class Component extends DCLogic {
+  state = { reduced: false, seen: {}, now: Date.now(), pastHero: false, name: '', email: '', status: null, backup: 'solo', backupName: '', fuel: null, song: '', submitted: false, sending: false, via: '', err: '', sentAt: '' };
+  briefRef = React.createRef(); d0Ref = React.createRef(); d1Ref = React.createRef();
+  d2Ref = React.createRef(); d3Ref = React.createRef(); rollRef = React.createRef();
+  progRef = React.createRef(); heroImgRef = React.createRef(); cardRef = React.createRef(); glareRef = React.createRef();
+  kbRef = React.createRef(); emberRef = React.createRef(); figRef = React.createRef(); hItinRef = React.createRef(); hIntelRef = React.createRef();
+  hRsvpRef = React.createRef(); mapRef = React.createRef(); pulseRef = React.createRef(); scanRef = React.createRef(); subRef = React.createRef();
+  levelRef = React.createRef(); confRef = React.createRef();
+  observed = new Set();
+
+  componentDidMount() {
+    let r = false;
+    try {
+      const s = localStorage.getItem('opforever-reduced');
+      r = s !== null ? s === '1' : window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    } catch (e) {}
+    this.setState({ reduced: r }, () => this.startAmbient());
+    this.timer = setInterval(() => this.setState({ now: Date.now() }), 1000);
+    if ('IntersectionObserver' in window) {
+      this.io = new IntersectionObserver(es => es.forEach(e => {
+        if (!e.isIntersecting) return;
+        const k = e.target.getAttribute('data-reveal');
+        this.io.unobserve(e.target);
+        this.setState(s => ({ seen: { ...s.seen, [k]: true } }));
+      }), { threshold: 0.2, rootMargin: '0px 0px -6% 0px' });
+    } else this.noIO = true;
+    this.observe();
+    this.onScroll = () => {
+      if (this.raf) return;
+      this.raf = requestAnimationFrame(() => { this.raf = 0; this.paintScroll(); });
+    };
+    window.addEventListener('scroll', this.onScroll, { passive: true });
+    window.addEventListener('resize', this.onScroll);
+    this.paintScroll();
+  }
+  componentDidUpdate(_, prev) {
+    const S = this.state, R = S.reduced;
+    this.observe();
+    if (prev.reduced !== R) { this.paintScroll(); this.startAmbient(); }
+    if (S.seen.map && !prev.seen.map) this.runMap();
+    const lv = this.levelRef.current;
+    if (lv) {
+      if (this.prevLevel !== undefined && lv.textContent !== this.prevLevel && !R && lv.animate)
+        lv.animate([{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'none' }], { duration: 420, easing: 'cubic-bezier(.16,.84,.24,1)' });
+      this.prevLevel = lv.textContent;
+    }
+    if (!prev.submitted && S.submitted && !R) {
+      const c = this.confRef.current;
+      if (c) [...c.children].forEach((el, i) => el.animate && el.animate([{ opacity: 0, transform: 'translateY(28px)' }, { opacity: 1, transform: 'none' }], { duration: 800, delay: 120 + i * 90, easing: 'cubic-bezier(.16,.84,.24,1)', fill: 'backwards' }));
+      const card = this.cardRef.current;
+      if (card && card.animate) card.animate([{ translate: '0 0' }, { translate: '0 5px' }, { translate: '0 -2px' }, { translate: '0 0' }], { duration: 380, delay: 400, easing: 'ease-out' });
+    }
+  }
+  startAmbient() {
+    this.stopAmbient();
+    if (this.state.reduced) return;
+    const kb = this.kbRef.current;
+    if (kb && kb.animate) this.kbAnim = kb.animate([{ transform: 'scale(1) translate3d(0,0,0)' }, { transform: 'scale(1.07) translate3d(-1%,-1%,0)' }], { duration: 26000, direction: 'alternate', iterations: Infinity, easing: 'ease-in-out' });
+    this.startEmbers();
+    if (this.state.seen.map) this.startPulse();
+  }
+  stopAmbient() {
+    this.kbAnim && this.kbAnim.cancel(); this.pulseAnim && this.pulseAnim.cancel();
+    cancelAnimationFrame(this.emberRaf); this.emberRaf = 0;
+    if (this.emberCv) this.emberCv.getContext('2d').clearRect(0, 0, this.emberCv.width, this.emberCv.height);
+  }
+  startEmbers() {
+    const host = this.emberRef.current; if (!host) return;
+    if (!this.emberCv) { const cv = document.createElement('canvas'); cv.style.cssText = 'position:absolute;inset:0;width:100%;height:100%'; host.appendChild(cv); this.emberCv = cv; }
+    const cv = this.emberCv, ctx = cv.getContext('2d'), P = [];
+    const spawn = (p, init) => {
+      const side = Math.random() < .55 ? 0 : 1;
+      p.x = side ? .76 + Math.random() * .24 : Math.random() * .3; p.y = init ? .35 + Math.random() * .65 : 1.02;
+      p.vy = .0008 + Math.random() * .0018; p.vx = (Math.random() - .5) * .0005 + (side ? -.00015 : .00025);
+      p.r = .6 + Math.random() * 1.7; p.life = 0; p.max = 200 + Math.random() * 280; p.ph = Math.random() * 6.28; p.hue = 16 + Math.random() * 24;
+      return p;
+    };
+    for (let i = 0; i < 46; i++) P.push(spawn({}, true));
+    const tick = () => {
+      this.emberRaf = requestAnimationFrame(tick);
+      if (document.hidden || window.scrollY > window.innerHeight * 1.2) return;
+      const w = host.clientWidth, h = host.clientHeight, d = Math.min(2, window.devicePixelRatio || 1);
+      if (cv.width !== Math.round(w * d) || cv.height !== Math.round(h * d)) { cv.width = Math.round(w * d); cv.height = Math.round(h * d); }
+      ctx.setTransform(d, 0, 0, d, 0, 0); ctx.clearRect(0, 0, w, h); ctx.globalCompositeOperation = 'lighter';
+      for (const p of P) {
+        p.life++; p.ph += .03; p.x += p.vx + Math.sin(p.ph) * .00035; p.y -= p.vy;
+        if (p.life > p.max || p.y < .2) spawn(p, false);
+        const a = Math.min(1, p.life / 30) * Math.max(0, 1 - p.life / p.max), x = p.x * w, y = p.y * h;
+        ctx.fillStyle = `hsla(${p.hue},100%,60%,${a * .16})`; ctx.beginPath(); ctx.arc(x, y, p.r * 4.5, 0, 6.283); ctx.fill();
+        ctx.fillStyle = `hsla(${p.hue + 12},100%,76%,${a * .9})`; ctx.beginPath(); ctx.arc(x, y, p.r, 0, 6.283); ctx.fill();
+      }
+    };
+    tick();
+  }
+  runMap() {
+    if (this.state.reduced) return;
+    const sc = this.scanRef.current;
+    if (sc && sc.animate) sc.animate([{ top: '0%', opacity: 0 }, { opacity: 1, offset: .1 }, { opacity: 1, offset: .88 }, { top: '100%', opacity: 0 }], { duration: 1500, easing: 'cubic-bezier(.45,0,.55,1)' });
+    clearTimeout(this.pulseT); this.pulseT = setTimeout(() => this.startPulse(), 1250);
+  }
+  startPulse() {
+    const p = this.pulseRef.current; if (!p || !p.animate || this.state.reduced) return;
+    this.pulseAnim && this.pulseAnim.cancel();
+    this.pulseAnim = p.animate([{ transform: 'scale(.5)', opacity: .9 }, { transform: 'scale(2.4)', opacity: 0 }], { duration: 2400, iterations: Infinity, easing: 'cubic-bezier(.16,.84,.24,1)' });
+  }
+  componentWillUnmount() {
+    clearInterval(this.timer); this.io && this.io.disconnect();
+    window.removeEventListener('scroll', this.onScroll); window.removeEventListener('resize', this.onScroll);
+    cancelAnimationFrame(this.raf); clearTimeout(this.pulseT); this.stopAmbient();
+  }
+  paintScroll() {
+    const y = window.scrollY, h = document.documentElement.scrollHeight - window.innerHeight;
+    if (this.progRef.current) this.progRef.current.style.transform = `scaleX(${h > 0 ? Math.min(1, y / h) : 0})`;
+    const img = this.heroImgRef.current;
+    if (img) img.style.transform = this.state.reduced ? 'none' : `translate3d(0,${Math.min(y, 1400) * 0.22}px,0)`;
+    const past = y > window.innerHeight * 0.75;
+    if (past !== this.state.pastHero) this.setState({ pastHero: past });
+  }
+  observe() {
+    if (!this.io) return;
+    [this.briefRef, this.d0Ref, this.d1Ref, this.d2Ref, this.d3Ref, this.rollRef, this.figRef, this.hItinRef, this.hIntelRef, this.hRsvpRef, this.mapRef].forEach(r => {
+      const el = r.current;
+      if (el && !this.observed.has(el)) { this.observed.add(el); this.io.observe(el); }
+    });
+  }
+  scrollToClearance() {
+    const el = document.getElementById('clearance');
+    if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 40, behavior: this.state.reduced ? 'auto' : 'smooth' });
+  }
+
+  renderVals() {
+    const P = this.props, S = this.state, R = S.reduced;
+    const A = P.accent === 'Neon Cyan'
+      ? { acc: '#35d6ec', ink: '#03151c', glow: 'rgba(53,214,236,.5)', link: '#5fe1f2' }
+      : { acc: '#d62c24', ink: '#ffffff', glow: 'rgba(214,44,36,.6)', link: '#ff6a5e' };
+    const ease = 'cubic-bezier(.16,.84,.24,1)';
+    const shown = k => R || this.noIO || !!S.seen[k];
+    const line = (k, i) => {
+      const s = shown(k);
+      return { o: s ? 1 : 0, y: s ? '0px' : '42px', t: R ? 'none' : `opacity 900ms ${ease} ${i * 140}ms, transform 1100ms ${ease} ${i * 140}ms` };
+    };
+    const doss = i => {
+      const s = shown('d' + i), dl = i * 110;
+      return {
+        o: s ? 1 : 0, y: s ? '0px' : '56px', r: s ? '0deg' : (i % 2 ? '1.5deg' : '-1.5deg'),
+        t: R ? 'none' : `opacity 700ms ${ease} ${dl}ms, transform 1000ms ${ease} ${dl}ms`,
+        bar: s ? 0 : 1, bt: R ? 'none' : `transform 700ms ${ease} ${dl + 500}ms`,
+        so: s ? 1 : 0, ss: s ? 1 : 1.6,
+        st: R ? 'none' : `opacity 200ms ease ${dl + 1050}ms, transform 420ms cubic-bezier(.3,1.5,.5,1) ${dl + 1050}ms`
+      };
+    };
+    const fig = i => {
+      const s = shown('figs'), rot = i ? 2.5 : -3;
+      return { o: s ? 1 : 0, tf: s ? `rotate(${rot}deg)` : `translateY(70px) rotate(${rot * 3}deg) scale(.94)`,
+        t: R ? 'none' : `opacity 600ms ${ease} ${i * 180}ms, transform 1100ms cubic-bezier(.2,1.25,.35,1) ${i * 180}ms` };
+    };
+    const mask = k => ({ y: shown(k) ? '0%' : '105%', t: R ? 'none' : `transform 1000ms ${ease}` });
+
+    const diff = Math.max(0, new Date('2027-06-12T16:00:00-07:00').getTime() - S.now);
+    const pad = n => String(n).padStart(2, '0');
+    const cd = `${Math.floor(diff / 864e5)}d ${pad(Math.floor(diff / 36e5) % 24)}h ${pad(Math.floor(diff / 6e4) % 60)}m ${pad(Math.floor(diff / 1e3) % 60)}s`;
+
+    const opt = on => ({ bd: on ? '#f2f3f5' : 'rgba(201,206,214,.22)', bg: on ? 'rgba(242,243,245,.08)' : 'rgba(255,255,255,.015)', dot: on ? '#f2f3f5' : 'transparent', p: on ? 'true' : 'false' });
+    const FUEL = {
+      steak: { label: 'Heavy Artillery', dish: 'Filet mignon', code: 'Agent Rare Steel', quip: 'Built for the long night and the first slow dance.', stats: [94, 64, 38] },
+      chicken: { label: 'Classic Cover', dish: 'Roast chicken', code: 'Agent Wingman', quip: 'Reliable, versatile, always blends in.', stats: [72, 82, 68] },
+      vegan: { label: 'Ghost Protocol', dish: 'Mushroom Wellington', code: 'Agent Evergreen', quip: 'Light on its feet. Leaves no trace.', stats: [56, 95, 92] }
+    };
+    const f = FUEL[S.fuel];
+    const decl = S.status === 'decline';
+    const name = S.name.trim(), first = name.split(/\s+/)[0] || 'agent';
+    const emailOk = /\S+@\S+\.\S+/.test(S.email);
+    const pct = (name ? 25 : 0) + (emailOk ? 15 : 0) + (S.status ? 20 : 0) + ((decl || f) ? 40 : 0);
+    const ready = pct === 100;
+    const level = S.submitted || pct === 100 ? 'Top secret' : pct >= 60 ? 'Confidential' : pct >= 25 ? 'Restricted' : 'None';
+    const initials = name ? name.split(/\s+/).slice(0, 2).map(w => w[0]).join('').toUpperCase() : '?';
+    const stats = f ? f.stats : [0, 0, 0];
+    const mrz = ('P<FOREVER<<' + (name || 'AGENT').toUpperCase().replace(/[^A-Z]+/g, '<') + '<'.repeat(40)).slice(0, 36) + '061227';
+
+    const party = decl ? '—' : S.backup === 'plus' ? (S.backupName.trim() ? `2 agents, with ${S.backupName.trim()}` : '2 agents') : '1 agent';
+    const fuelTxt = decl ? '—' : (f ? `${f.label} · ${f.dish}` : 'Not selected');
+    const endpoint = (P.rsvpEndpoint || '').trim();
+    const hq = (P.hqEmail || 'hq@sarahandalex.com').trim();
+    const body = [`Name: ${name}`, `Email: ${S.email}`, `Answer: ${decl ? 'Regretfully decline' : 'Accept'}`,
+      ...(decl ? [] : [`Party: ${party}`, `Meal: ${fuelTxt}`, `Song request: ${S.song.trim() || '—'}`])].join('\n');
+    const mailHref = `mailto:${hq}?subject=${encodeURIComponent(`RSVP: ${name || 'Agent'} (${decl ? 'declines' : 'accepts'})`)}&body=${encodeURIComponent(body)}`;
+    const ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Operation Forever//EN', 'BEGIN:VEVENT', 'UID:opforever-20270612@sarahandalex.com',
+      'DTSTAMP:20261114T000000Z', 'DTSTART:20270612T230000Z', 'DTEND:20270613T063000Z', 'SUMMARY:Sarah & Alex: Operation Forever',
+      'LOCATION:Hawthorne House\\, 1200 Silverado Trail\\, Napa\\, CA 94558', 'DESCRIPTION:Ceremony at 16:00. Arrive by 15:40. Black tie optional.',
+      'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
+
+    const set = k => e => this.setState({ [k]: e.target.value, err: '' });
+    const sub = S.sending
+      ? { bg: 'transparent', ink: '#f2f3f5', bd: 'rgba(242,243,245,.6)', cur: 'progress', hov: 'none', sh: 'none', label: 'Transmitting…' }
+      : ready
+      ? { bg: A.acc, ink: A.ink, bd: A.acc, cur: 'pointer', hov: 'translateY(-3px)', sh: `0 26px 50px -18px ${A.glow}, 0 10px 24px -10px rgba(0,0,0,.8)`, label: decl ? 'Transmit regrets' : 'Transmit RSVP' }
+      : { bg: 'transparent', ink: '#9aa3b2', bd: 'rgba(201,206,214,.3)', cur: 'not-allowed', hov: 'none', sh: 'none', label: `Clearance ${pct}% · complete your file` };
+    const viaMail = S.via === 'mail';
+    const shownBar = S.pastHero && !S.submitted;
+
+    return {
+      acc: A.acc, accInk: A.ink, accGlow: A.glow, accLink: A.link,
+      letterbox: P.letterbox ?? true,
+      ariaMotion: R ? 'false' : 'true', motionLabel: R ? 'off' : 'on',
+      trkBg: R ? 'transparent' : '#f2f3f5', knobBg: R ? '#b9c0cb' : '#0a0f1a', knobX: R ? '0px' : '14px',
+      toggleMotion: () => {
+        const r = !this.state.reduced;
+        try { localStorage.setItem('opforever-reduced', r ? '1' : '0'); } catch (e) {}
+        this.setState({ reduced: r });
+      },
+      barCta: { o: shownBar ? 1 : 0, y: shownBar ? '0px' : '-6px', pe: shownBar ? 'auto' : 'none', tab: shownBar ? 0 : -1, hidden: shownBar ? 'false' : 'true' },
+      progRef: this.progRef, heroImgRef: this.heroImgRef, cardRef: this.cardRef, glareRef: this.glareRef,
+      goRSVP: e => { e.preventDefault(); this.scrollToClearance(); },
+      cd,
+      briefRef: this.briefRef, d0Ref: this.d0Ref, d1Ref: this.d1Ref, d2Ref: this.d2Ref, d3Ref: this.d3Ref, rollRef: this.rollRef,
+      b0: line('brief', 0), b1: line('brief', 1), b2: line('brief', 2), b3: line('brief', 3),
+      d0: doss(0), d1: doss(1), d2: doss(2), d3: doss(3),
+      f0: fig(0), f1: fig(1), hItin: mask('hItin'), hIntel: mask('hIntel'), hRsvp: mask('hRsvp'),
+      chip: (() => { const s = shown('map'); return { o: s ? 1 : 0, y: s ? '0px' : '8px', t: R ? 'none' : `opacity 500ms ease 1300ms, transform 600ms ${ease} 1300ms` }; })(),
+      kbRef: this.kbRef, emberRef: this.emberRef, figRef: this.figRef, hItinRef: this.hItinRef, hIntelRef: this.hIntelRef, hRsvpRef: this.hRsvpRef,
+      mapRef: this.mapRef, pulseRef: this.pulseRef, scanRef: this.scanRef, subRef: this.subRef, levelRef: this.levelRef, confRef: this.confRef,
+      sweep: S.sending && !R ? React.createElement('span', { 'aria-hidden': true, style: { position: 'absolute', left: 0, bottom: 0, height: '3px', width: '40%', background: A.acc, animation: 'opf-sweep 1s cubic-bezier(.45,0,.55,1) infinite' } }) : null,
+      r0: line('roll', 0), r1: line('roll', 1), r2: line('roll', 2), r3: line('roll', 3),
+
+      tilt: e => {
+        if (this.state.reduced || e.pointerType !== 'mouse') return;
+        const el = this.cardRef.current, g = this.glareRef.current; if (!el) return;
+        const b = el.getBoundingClientRect(), x = (e.clientX - b.left) / b.width, y = (e.clientY - b.top) / b.height;
+        el.style.transform = `perspective(1100px) rotateX(${(0.5 - y) * 6}deg) rotateY(${(x - 0.5) * 8}deg)`;
+        if (g) { g.style.opacity = 1; g.style.background = `radial-gradient(420px circle at ${x * 100}% ${y * 100}%,rgba(255,255,255,.09),transparent 60%)`; }
+      },
+      untilt: () => {
+        const el = this.cardRef.current, g = this.glareRef.current;
+        if (el) el.style.transform = ''; if (g) g.style.opacity = 0;
+      },
+
+      editing: !S.submitted, submitted: S.submitted,
+      name: S.name, email: S.email, backupName: S.backupName, song: S.song,
+      setName: set('name'), setEmail: set('email'), setBackupName: set('backupName'), setSong: set('song'),
+      st: { accept: opt(S.status === 'accept'), decline: opt(decl) },
+      pickAccept: () => this.setState({ status: 'accept' }),
+      pickDecline: () => this.setState({ status: 'decline' }),
+      attending: !decl,
+      bk: { solo: opt(S.backup === 'solo'), plus: opt(S.backup === 'plus') },
+      pickSolo: () => this.setState({ backup: 'solo' }),
+      pickPlus: () => this.setState({ backup: 'plus' }),
+      hasPlus: S.backup === 'plus',
+      fu: { steak: opt(S.fuel === 'steak'), chicken: opt(S.fuel === 'chicken'), vegan: opt(S.fuel === 'vegan') },
+      pickSteak: () => this.setState({ fuel: 'steak' }),
+      pickChicken: () => this.setState({ fuel: 'chicken' }),
+      pickVegan: () => this.setState({ fuel: 'vegan' }),
+      loadoutLine: f ? f.quip : 'Choose a ration to load your agent.',
+      bar0: stats[0] + '%', bar1: stats[1] + '%', bar2: stats[2] + '%',
+      val0: f ? stats[0] : '—', val1: f ? stats[1] : '—', val2: f ? stats[2] : '—',
+      barT: R ? 'none' : `width 800ms ${ease}`,
+
+      level, initials, mrz,
+      bName: name || 'Unidentified agent',
+      bCode: decl ? 'Standing down' : (f ? f.code : 'Codename pending'),
+      bStatus: S.submitted ? (viaMail ? 'Filed, awaiting your send' : 'Transmitted to HQ') : S.status === 'accept' ? 'Mission accepted' : decl ? 'Declined with regrets' : 'Awaiting response',
+      bParty: party, bFuel: fuelTxt, bSong: S.song.trim() || '—',
+      pctLabel: (S.submitted ? 100 : pct) + '%', pctW: (S.submitted ? 100 : pct) + '%',
+      pctBg: (S.submitted || ready) ? A.acc : '#f2f3f5',
+      notReady: !ready || S.sending, sub,
+      hasErr: !!S.err, err: S.err,
+      privacyLine: endpoint ? 'Your file is only shared with Sarah, Alex and the caterer.' : `Transmits through your email app to ${hq}. Only Sarah, Alex and the caterer see it.`,
+      submit: async e => {
+        e.preventDefault();
+        if (!ready || this.state.sending) return;
+        const t = new Date(), sentAt = `${pad(t.getHours())}:${pad(t.getMinutes())} hrs`;
+        if (endpoint) {
+          this.setState({ sending: true, err: '' });
+          try {
+            const res = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+              body: JSON.stringify({ name, email: S.email, answer: decl ? 'decline' : 'accept', party, meal: decl ? '' : fuelTxt, song: S.song.trim() }) });
+            if (!res.ok) throw new Error(res.status);
+            this.setState({ sending: false, submitted: true, via: 'web', sentAt });
+          } catch (_) {
+            this.setState({ sending: false, err: `Transmission failed. Try again, or email ${hq}.` });
+            const b = this.subRef.current;
+            if (b && b.animate && !this.state.reduced) b.animate([{ translate: '0' }, { translate: '-8px' }, { translate: '7px' }, { translate: '-5px' }, { translate: '3px' }, { translate: '0' }], { duration: 420, easing: 'ease-out' });
+            return;
+          }
+        } else {
+          const a = document.createElement('a'); a.href = mailHref; a.target = '_top'; a.rel = 'noopener';
+          document.body.appendChild(a); a.click(); a.remove();
+          this.setState({ submitted: true, via: 'mail', sentAt });
+        }
+        this.scrollToClearance();
+      },
+      edit: () => this.setState({ submitted: false, via: '' }),
+      viaMail, mailHref,
+      showCal: !decl,
+      icsHref: 'data:text/calendar;charset=utf-8,' + encodeURIComponent(ics),
+      stampText: viaMail ? 'Filed' : decl ? 'Received' : 'Cleared',
+      stampO: S.submitted ? 1 : 0, stampS: S.submitted ? 1 : 1.8,
+      stampT: R ? 'none' : 'opacity 220ms ease 200ms, transform 420ms cubic-bezier(.3,1.5,.5,1) 200ms',
+      confKicker: viaMail ? `File sealed · ${S.sentAt}` : `Transmission received · ${S.sentAt}`,
+      confTitle: viaMail ? 'One step left.' : decl ? 'Regrets received.' : 'Mission accepted.',
+      confBody: viaMail
+        ? `Your email app should have opened with your file addressed to HQ, ${first}. Press send to complete the transmission. If nothing opened, use the button below.`
+        : decl
+        ? `Understood, ${first}. You'll be missed at HQ, and a slice of cake will be smuggled out in your honor.`
+        : `Welcome to the operation, ${first}. Your credentials are on file. Final orders, including shuttle times and your table assignment, will reach your secure channel in May.`
+    };
+  }
+}
+</script>
+</body>
+</html>
